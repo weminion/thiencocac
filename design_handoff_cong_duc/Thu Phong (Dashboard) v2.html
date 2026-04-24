@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Thư Phòng · Thiên Cơ Các</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: { extend: {
+    colors: {
+      ink: { DEFAULT: '#0a0806', 2: '#14100a', 3: '#1f1812' },
+      gold: { DEFAULT: '#d4a24b', bright: '#f4cf73', deep: '#8a6a2a' },
+      red: { DEFAULT: '#a02828', deep: '#6a1818' },
+      cream: { DEFAULT: '#f5ecd9', dim: '#c9bd9e' }
+    },
+    fontFamily: {
+      serif: ['"Cormorant Garamond"', 'serif'],
+      sans: ['"Be Vietnam Pro"', 'sans-serif'],
+      brush: ['"Ma Shan Zheng"', 'serif']
+    },
+    animation: {
+      'rotate-slow': 'rotate 80s linear infinite',
+      'fade-up': 'fadeUp 0.5s ease'
+    },
+    keyframes: {
+      rotate: { to: { transform: 'rotate(360deg)' } },
+      fadeUp: { from: { opacity: '0', transform: 'translateY(12px)' }, to: { opacity: '1', transform: 'translateY(0)' } }
+    }
+  }}
+};
+</script>
+<style type="text/tailwindcss">
+  body { font-family: 'Be Vietnam Pro', sans-serif; background: #0a0806; color: #f5ecd9; }
+  html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script src="ngu-hanh.js"></script>
+<script type="text/babel" src="cong-duc.jsx"></script>
+<script type="text/babel" src="cong-duc-ui.jsx"></script>
+<script type="text/babel" src="cong-duc-section.jsx"></script>
+<script type="text/babel">
+const { useState, useMemo } = React;
+
+const CHARTS = [
+  { id:1, name:'Bạn', rel:'Chủ mệnh', year:1992, gender:'nam', avatar:'我', pinned:true },
+  { id:2, name:'Minh Anh', rel:'Vợ', year:1994, gender:'nu', avatar:'妻' },
+  { id:3, name:'Bé An', rel:'Con trai', year:2020, gender:'nam', avatar:'子' },
+  { id:4, name:'Anh Tuấn', rel:'Đối tác', year:1985, gender:'nam', avatar:'友' }
+];
+
+const HISTORY = [
+  { date:'20/04/2026', type:'Tra mệnh', detail:'Năm sinh 1994 · Mệnh Mộc' },
+  { date:'19/04/2026', type:'Xem ngày', detail:'Khai trương tháng 5/2026' },
+  { date:'17/04/2026', type:'Hợp tuổi', detail:'1992 × 1994 — Tương sinh' },
+  { date:'15/04/2026', type:'Luận vận niên', detail:'Vận niên 2026 cho Mệnh Kim' },
+  { date:'10/04/2026', type:'Tra mệnh', detail:'Năm sinh 1985 · Mệnh Hỏa' }
+];
+
+const TODAY = {
+  date: 'Thứ Hai, 20/04/2026',
+  canChi: 'Giáp Tý · Ngày Hải Trung Kim',
+  stars: 'Thiên Đức · Nguyệt Đức',
+  good: ['Khai trương', 'Ký hợp đồng', 'Xuất hành phía Tây', 'Gặp quý nhân'],
+  bad: ['Cưới hỏi', 'Động thổ', 'Di chuyển phía Nam'],
+  hours: [
+    { h:'Tý (23-1h)', luck:'bad' }, { h:'Sửu (1-3h)', luck:'good' },
+    { h:'Dần (3-5h)', luck:'good' }, { h:'Mão (5-7h)', luck:'bad' },
+    { h:'Thìn (7-9h)', luck:'good' }, { h:'Tỵ (9-11h)', luck:'neutral' },
+    { h:'Ngọ (11-13h)', luck:'good' }, { h:'Mùi (13-15h)', luck:'bad' },
+    { h:'Thân (15-17h)', luck:'good' }, { h:'Dậu (17-19h)', luck:'neutral' },
+    { h:'Tuất (19-21h)', luck:'bad' }, { h:'Hợi (21-23h)', luck:'good' }
+  ]
+};
+
+function Sidebar({ active, onSelect, mobileOpen, onCloseMobile, onOpenCongDuc }) {
+  const items = [
+    { id:'home', icon:'☯', label:'Thư phòng' },
+    { id:'charts', icon:'命', label:'Lá số' },
+    { id:'today', icon:'日', label:'Hôm nay' },
+    { id:'congduc', icon:'功', label:'Công Đức' },
+    { id:'calendar', icon:'曆', label:'Vận niên' },
+    { id:'history', icon:'跡', label:'Lịch sử' },
+    { id:'notes', icon:'書', label:'Ghi chú' },
+    { id:'sages', icon:'師', label:'Chuyên gia' }
+  ];
+  return (
+    <>
+      {mobileOpen && <div className="lg:hidden fixed inset-0 bg-ink/70 backdrop-blur-sm z-40" onClick={onCloseMobile}></div>}
+      <aside className={`fixed lg:sticky top-0 left-0 z-50 lg:z-0 w-[260px] lg:w-[240px] shrink-0 border-r border-gold/20 bg-ink-2 flex flex-col h-screen transition-transform lg:translate-x-0 ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+      <a href="Landing Page (Tailwind).html" className="flex items-center gap-3 p-5 border-b border-gold/20 cursor-pointer hover:bg-ink-3 transition-colors">
+        <img src="assets/logo.jpg" className="w-9 h-9 rounded-full object-cover border border-gold/40"/>
+        <div>
+          <div className="font-serif text-[17px] font-semibold text-cream leading-tight">Thiên Cơ Các</div>
+          <div className="text-[10px] text-gold tracking-[0.2em] uppercase">Thư phòng</div>
+        </div>
+      </a>
+      <nav className="flex-1 p-3 flex flex-col gap-1">
+        {items.map(it => (
+          <button key={it.id} onClick={() => { onSelect(it.id); onCloseMobile && onCloseMobile(); }}
+            className={`flex items-center gap-3 px-3 py-2.5 text-[14px] font-medium rounded-sm transition-all text-left ${active === it.id ? 'bg-gradient-to-r from-gold/20 to-transparent text-gold-bright border-l-2 border-gold' : 'text-cream-dim hover:text-cream hover:bg-ink-3'}`}>
+            <span className={`font-brush text-xl w-7 text-center ${active === it.id ? 'text-gold' : 'text-gold/60'}`}>{it.icon}</span>
+            <span>{it.label}</span>
+          </button>
+        ))}
+      </nav>
+      <div className="p-3 border-t border-gold/20">
+        <CongDucSidebarWidget onOpen={onOpenCongDuc}/>
+      </div>
+      <div className="p-3 border-t border-gold/20">
+        <div className="bg-gradient-to-br from-ink-3 to-ink p-4 border border-gold/40 relative">
+          <span className="absolute -top-px -left-px w-3 h-3 border-t border-l border-gold"></span>
+          <span className="absolute -bottom-px -right-px w-3 h-3 border-b border-r border-gold"></span>
+          <div className="text-[10px] tracking-[0.2em] uppercase text-gold mb-1.5 font-medium">Hội viên</div>
+          <div className="font-serif text-cream text-[15px] mb-2">Nâng cấp Thượng khách</div>
+          <div className="text-xs text-cream-dim leading-snug mb-3">Lá số không giới hạn · Nhắc nhở hàng ngày · Ưu đãi tư vấn 1-1</div>
+          <button className="w-full py-2 text-xs font-semibold bg-gradient-to-br from-gold-bright to-gold text-ink tracking-wider uppercase">Khai mở</button>
+        </div>
+      </div>
+      <div className="p-4 border-t border-gold/20 flex items-center gap-3">
+        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-bright to-gold-deep flex items-center justify-center font-brush text-ink text-lg">我</div>
+        <div className="flex-1 min-w-0">
+          <div className="text-sm text-cream font-medium truncate">Nguyễn Minh</div>
+          <div className="text-[11px] text-cream-dim">Mệnh Kiếm Phong Kim</div>
+        </div>
+        <button className="text-cream-dim hover:text-gold-bright text-lg">⚙</button>
+      </div>
+    </aside>
+    </>
+  );
+}
+
+function TopBar({ userName, onMenuOpen }) {
+  return (
+    <div className="flex items-center justify-between gap-3 p-4 md:p-6 md:px-10 border-b border-gold/20">
+      <div className="flex items-center gap-3 min-w-0">
+        <button onClick={onMenuOpen} className="lg:hidden w-10 h-10 border border-gold/40 flex items-center justify-center text-gold-bright flex-shrink-0">
+          <span className="font-brush text-xl">☰</span>
+        </button>
+        <div className="min-w-0">
+          <div className="text-[10px] md:text-[11px] tracking-[0.2em] md:tracking-[0.25em] uppercase text-gold font-medium mb-1">Thỉnh giáo, {userName}</div>
+          <h1 className="font-serif text-[20px] md:text-[32px] font-medium text-cream leading-tight">
+            Hôm nay là ngày <span className="italic bg-gradient-to-br from-gold-bright to-gold-deep bg-clip-text text-transparent">cát</span> — thuận việc khởi sự
+          </h1>
+        </div>
+      </div>
+      <div className="flex gap-2 md:gap-3 items-center flex-shrink-0">
+        <button className="hidden md:flex px-4 py-2.5 border border-gold/40 text-cream-dim text-sm hover:border-gold hover:text-gold-bright transition-colors items-center gap-2">
+          <span className="font-brush text-gold">通</span> Thông báo
+          <span className="bg-red text-cream text-[10px] px-1.5 rounded-full font-semibold">3</span>
+        </button>
+        <button className="px-3 md:px-5 py-2 md:py-2.5 bg-gradient-to-br from-gold-bright to-gold text-ink text-[13px] md:text-sm font-semibold flex items-center gap-1.5">
+          <span>+</span> <span className="hidden sm:inline">Thêm lá số</span>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function ChartCard({ chart, onClick }) {
+  const menh = useMemo(() => window.NguHanh.getMenh(chart.year), [chart.year]);
+  const meta = menh.meta;
+  return (
+    <div onClick={onClick} className="relative bg-gradient-to-br from-ink-2 to-ink-3 border border-gold/20 hover:border-gold/50 p-5 cursor-pointer transition-all group overflow-hidden">
+      <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-30 group-hover:opacity-60 transition-opacity pointer-events-none"
+           style={{ background: `radial-gradient(circle, ${meta.color}, transparent 70%)` }}></div>
+      <div className="relative flex items-start gap-4">
+        <div className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0 font-brush text-2xl text-ink"
+             style={{ background: `radial-gradient(circle at 30% 30%, ${meta.color}, ${meta.bg})`, boxShadow: `0 0 0 1px ${meta.color}aa` }}>
+          {chart.avatar}
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-0.5">
+            <span className="text-[10px] tracking-[0.18em] uppercase text-cream-dim">{chart.rel}</span>
+            {chart.pinned && <span className="text-[9px] tracking-[0.2em] uppercase text-gold bg-gold/10 border border-gold/40 px-1.5 py-px leading-tight">Chính</span>}
+          </div>
+          <div className="font-serif text-xl text-cream font-medium mb-0.5 truncate">{chart.name}</div>
+          <div className="text-[13px] text-cream-dim">{menh.canChi} · {chart.year}</div>
+        </div>
+      </div>
+      <div className="relative mt-4 pt-3 border-t border-gold/20 flex items-center justify-between">
+        <div>
+          <div className="font-serif text-[15px]" style={{ color: meta.color }}>{menh.napAm}</div>
+          <div className="text-[11px] text-cream-dim">Mệnh {menh.element}</div>
+        </div>
+        <button className="text-xs text-cream-dim group-hover:text-gold-bright tracking-wider uppercase">Xem →</button>
+      </div>
+    </div>
+  );
+}
+
+function TodayCard() {
+  return (
+    <div className="bg-gradient-to-br from-ink-2 to-ink-3 border border-gold/40 p-5 md:p-7 relative overflow-hidden">
+      <span className="absolute -top-px -left-px w-5 h-5 border-t border-l border-gold"></span>
+      <span className="absolute -bottom-px -right-px w-5 h-5 border-b border-r border-gold"></span>
+
+      <div className="flex items-start justify-between mb-5 gap-4">
+        <div>
+          <div className="text-[11px] tracking-[0.25em] uppercase text-gold font-medium mb-1">Hôm nay</div>
+          <div className="font-serif text-[22px] text-cream font-medium">{TODAY.date}</div>
+          <div className="font-serif italic text-gold-bright text-[15px] mt-1">{TODAY.canChi}</div>
+        </div>
+        <div className="text-right">
+          <div className="text-[10px] tracking-widest uppercase text-cream-dim mb-1">Sao chiếu</div>
+          <div className="font-brush text-gold text-lg">{TODAY.stars}</div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 mb-5">
+        <div>
+          <div className="text-[10px] tracking-[0.2em] uppercase text-emerald-400 mb-2 font-medium flex items-center gap-1.5">
+            <span className="font-brush text-base">吉</span> Nên làm
+          </div>
+          <ul className="space-y-1.5">
+            {TODAY.good.map(g => (
+              <li key={g} className="text-sm text-cream flex items-start gap-2">
+                <span className="text-emerald-400 text-[10px] mt-1.5">◆</span>{g}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <div className="text-[10px] tracking-[0.2em] uppercase text-red-400 mb-2 font-medium flex items-center gap-1.5">
+            <span className="font-brush text-base">凶</span> Nên tránh
+          </div>
+          <ul className="space-y-1.5">
+            {TODAY.bad.map(b => (
+              <li key={b} className="text-sm text-cream flex items-start gap-2">
+                <span className="text-red-400 text-[10px] mt-1.5">✕</span>{b}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div className="pt-4 border-t border-gold/20">
+        <div className="text-[10px] tracking-[0.2em] uppercase text-gold mb-2.5 font-medium">Giờ cát hung trong ngày</div>
+        <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5">
+          {TODAY.hours.map(h => {
+            const color = h.luck === 'good' ? 'border-emerald-500/40 text-emerald-300 bg-emerald-500/10'
+              : h.luck === 'bad' ? 'border-red-500/30 text-red-300/80 bg-red-500/5 opacity-70'
+              : 'border-gold/20 text-cream-dim';
+            return (
+              <div key={h.h} className={`border text-[11px] px-2 py-1.5 text-center ${color}`}>{h.h}</div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function QuickTools() {
+  const tools = [
+    { glyph:'卜', name:'Tra mệnh nhanh', desc:'Nhập ngày sinh' },
+    { glyph:'日', name:'Xem ngày tốt', desc:'Chọn ngày cát' },
+    { glyph:'合', name:'Hợp tuổi', desc:'So hai lá số' },
+    { glyph:'方', name:'Phương hướng', desc:'Bố trí nhà' }
+  ];
+  return (
+    <div className="grid grid-cols-2 gap-3">
+      {tools.map(t => (
+        <button key={t.name} className="bg-ink-2 border border-gold/20 hover:border-gold/50 p-4 text-left transition-all group">
+          <div className="flex items-center gap-3">
+            <span className="font-brush text-gold text-[28px] w-11 h-11 flex items-center justify-center border border-gold/30 bg-ink group-hover:text-gold-bright group-hover:border-gold transition-colors">{t.glyph}</span>
+            <div>
+              <div className="font-serif text-base text-cream font-medium">{t.name}</div>
+              <div className="text-xs text-cream-dim">{t.desc}</div>
+            </div>
+          </div>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function Reminders() {
+  const items = [
+    { when:'Ngày mai', what:'Giờ Dần (3-5h) — hợp xuất hành phương Tây', tag:'Cát giờ' },
+    { when:'Thứ 5 tuần này', what:'Ngày tốt ký hợp đồng tài chính', tag:'Cơ hội' },
+    { when:'Chủ nhật 26/04', what:'Tránh khởi công, động thổ — Tam nương sát', tag:'Cảnh báo' },
+    { when:'Đầu tháng 5', what:'Vận quý nhân — nên gặp đối tác cũ', tag:'Quý nhân' }
+  ];
+  return (
+    <div className="bg-ink-2 border border-gold/20 p-6">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <div className="text-[11px] tracking-[0.25em] uppercase text-gold font-medium mb-1">Nhắc nhở</div>
+          <div className="font-serif text-xl text-cream font-medium">Tuần tới có gì đáng chú ý</div>
+        </div>
+        <button className="text-xs text-cream-dim hover:text-gold-bright tracking-wider uppercase">Xem cả tháng →</button>
+      </div>
+      <ul className="divide-y divide-gold/10">
+        {items.map((it, i) => (
+          <li key={i} className="flex items-start gap-4 py-3">
+            <div className="w-[110px] shrink-0">
+              <div className="text-[10px] tracking-[0.18em] uppercase text-gold font-medium">{it.tag}</div>
+              <div className="text-[13px] text-cream-dim">{it.when}</div>
+            </div>
+            <div className="flex-1 text-sm text-cream leading-snug">{it.what}</div>
+            <button className="text-cream-dim hover:text-gold-bright text-xs shrink-0">Bỏ qua</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function HistoryList() {
+  return (
+    <div className="bg-ink-2 border border-gold/20 p-6">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <div className="text-[11px] tracking-[0.25em] uppercase text-gold font-medium mb-1">Lịch sử tra cứu</div>
+          <div className="font-serif text-xl text-cream font-medium">Những gì bạn đã xem</div>
+        </div>
+        <button className="text-xs text-cream-dim hover:text-gold-bright tracking-wider uppercase">Tất cả →</button>
+      </div>
+      <ul className="divide-y divide-gold/10">
+        {HISTORY.map((h, i) => (
+          <li key={i} className="flex items-start gap-4 py-3">
+            <div className="text-[13px] text-cream-dim w-[100px] shrink-0">{h.date}</div>
+            <div className="flex-1">
+              <div className="text-[11px] tracking-[0.15em] uppercase text-gold font-medium">{h.type}</div>
+              <div className="text-sm text-cream">{h.detail}</div>
+            </div>
+            <button className="text-cream-dim hover:text-gold-bright text-xs shrink-0">Xem lại →</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function ChartsSection() {
+  return (
+    <section className="p-5 md:p-10 md:pt-8">
+      <div className="flex items-end justify-between mb-5 gap-4">
+        <div>
+          <div className="text-[10px] md:text-[11px] tracking-[0.25em] uppercase text-gold font-medium mb-1">Lá số của tôi</div>
+          <h2 className="font-serif text-[22px] md:text-[28px] text-cream font-medium">Bạn & những người thân</h2>
+        </div>
+        <button className="text-[11px] md:text-xs text-cream-dim hover:text-gold-bright tracking-wider uppercase">Xem tất cả ({CHARTS.length}) →</button>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+        {CHARTS.map(c => <ChartCard key={c.id} chart={c}/>)}
+        <button className="bg-ink-2/50 border border-dashed border-gold/30 hover:border-gold hover:bg-ink-2 flex flex-col items-center justify-center p-5 gap-2 min-h-[165px] transition-all group">
+          <span className="font-brush text-[44px] text-gold/60 group-hover:text-gold">+</span>
+          <span className="text-sm text-cream-dim group-hover:text-cream">Thêm lá số mới</span>
+          <span className="text-[11px] text-cream-dim/60">Tối đa 5 lá số miễn phí</span>
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function AppInner() {
+  const [active, setActive] = useState('home');
+  const [menuOpen, setMenuOpen] = useState(false);
+  return (
+    <div className="flex min-h-screen">
+      <Sidebar active={active} onSelect={setActive} mobileOpen={menuOpen} onCloseMobile={() => setMenuOpen(false)} onOpenCongDuc={() => setActive('congduc')}/>
+      <main className="flex-1 min-w-0">
+        <TopBar userName="Minh" onMenuOpen={() => setMenuOpen(true)}/>
+
+        {active === 'congduc' ? <CongDucPage/> : (<>
+        <ChartsSection/>
+
+        <section className="px-5 md:px-10 pb-10 grid grid-cols-1 lg:grid-cols-3 gap-5 md:gap-6">
+          <div className="lg:col-span-2 flex flex-col gap-5 md:gap-6">
+            <TodayCard/>
+            <Reminders/>
+          </div>
+          <div className="flex flex-col gap-5 md:gap-6">
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <div className="text-[11px] tracking-[0.25em] uppercase text-gold font-medium">Tra cứu nhanh</div>
+              </div>
+              <QuickTools/>
+            </div>
+            <HistoryList/>
+            <div className="bg-gradient-to-br from-red/15 to-ink-3 border border-red/40 p-6 relative">
+              <span className="absolute -top-px -left-px w-4 h-4 border-t border-l border-red"></span>
+              <span className="absolute -bottom-px -right-px w-4 h-4 border-b border-r border-red"></span>
+              <div className="font-brush text-red text-3xl mb-2">師</div>
+              <div className="font-serif text-xl text-cream font-medium mb-1">Thỉnh giáo chuyên gia</div>
+              <div className="text-sm text-cream-dim leading-snug mb-4">Đặt lịch 1-1 với thầy Minh Châu — 12 năm kinh nghiệm Tử vi, Phong thủy Bát trạch.</div>
+              <button className="w-full py-2.5 bg-gradient-to-br from-gold-bright to-gold text-ink text-sm font-semibold tracking-wider">Đặt lịch 60 phút</button>
+            </div>
+          </div>
+        </section>
+        </>)}
+      </main>
+    </div>
+  );
+}
+
+function App() {
+  return <CongDucProvider><AppInner/></CongDucProvider>;
+}
+
+ReactDOM.createRoot(document.getElementById('app')).render(<App/>);
+</script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+/* ── Design Tokens ─────────────────────────────────────────── */
+@theme {
+  /* Colors */
+  --color-ink:         #0a0806;
+  --color-ink-2:       #14100a;
+  --color-ink-3:       #1f1812;
+  --color-gold:        #d4a24b;
+  --color-gold-bright: #f4cf73;
+  --color-gold-deep:   #8a6a2a;
+  --color-red:         #a02828;
+  --color-red-deep:    #6a1818;
+  --color-cream:       #f5ecd9;
+  --color-cream-dim:   #c9bd9e;
+
+  /* Typography — var() trỏ tới next/font variables trong layout.tsx */
+  --font-serif:  var(--font-cormorant), "Cormorant Garamond", serif;
+  --font-sans:   var(--font-be-vietnam), "Be Vietnam Pro", sans-serif;
+  --font-brush:  var(--font-ma-shan), "Ma Shan Zheng", serif;
+
+  /* Animations */
+  --animate-float:           float 12s ease-in-out infinite;
+  --animate-float-reverse:   float 14s ease-in-out infinite reverse;
+  --animate-twinkle:         twinkle 6s ease-in-out infinite;
+  --animate-glow:            glowPulse 4s ease-in-out infinite;
+  --animate-rotate-slow:     rotateFull 80s linear infinite;
+  --animate-rotate-can-chi:  rotateFull 120s linear infinite;
+  --animate-bob:             bob 2s ease-in-out infinite;
+  --animate-fade-up:         fadeUp 0.6s ease;
+  --animate-fade-in:         fadeIn 0.3s ease;
+  --animate-pop-in:          popIn 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+  --animate-smoke-rise:      smokeRise 3.5s ease-in infinite;
+  --animate-breathe:         breathe 6s ease-in-out infinite;
+}
+
+/* ── Keyframes ─────────────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  50%       { transform: translate(40px, -30px); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.7; }
+  50%       { opacity: 1; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.6; transform: scale(0.95); }
+  50%       { opacity: 1;   transform: scale(1.05); }
+}
+
+@keyframes rotateFull {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(4px); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes smokeRise {
+  0%   { transform: translate(-50%, 0) scale(0.4); opacity: 0; }
+  15%  { opacity: 0.8; }
+  100% { transform: translate(calc(-50% + 30px), -220px) scale(2.2); opacity: 0; }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1);     opacity: 0.6; }
+  50%       { transform: scale(1.06); opacity: 1; }
+}
+
+/* ── Base ──────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0a0806;
+  color: #f5ecd9;
+  font-family: "Be Vietnam Pro", sans-serif;
+}
+
+/* ── Stars utility ─────────────────────────────────────────── */
+.stars {
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(244, 207, 115, 0.8), transparent),
+    radial-gradient(1px 1px at 80% 70%, rgba(244, 207, 115, 0.6), transparent),
+    radial-gradient(1px 1px at 40% 80%, rgba(244, 207, 115, 0.7), transparent);
+  background-size: 400px 400px;
+  animation: twinkle 6s ease-in-out infinite;
+}
+
+/* ── Smoke puff (nhang) ────────────────────────────────────── */
+.smoke-puff {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 236, 217, 0.22), transparent);
+  filter: blur(8px);
+  animation: smokeRise 3.5s ease-in infinite;
+}
+
+/* ── Reduced motion ────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .stars,
+  .smoke-puff {
+    animation: none !important;
+  }
+}
