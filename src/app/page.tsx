@@ -1,8 +1,8 @@
-import LandingShell from './components/landing/LandingShell';
-import Hero from './components/landing/Hero';
-import Features from './components/landing/Features';
-import Blog from './components/landing/Blog';
-import Footer from './components/landing/Footer';
+import LandingShell from '@/features/landing/LandingShell';
+import Hero from '@/features/landing/Hero';
+import Features from '@/features/landing/Features';
+import Blog from '@/features/landing/Blog';
+import Footer from '@/features/landing/Footer';
 
 export default function HomePage() {
   return (
