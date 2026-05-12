@@ -1,217 +1,145 @@
 import Link from 'next/link';
 
-const CHART_SAMPLES = [
-  { name: 'Nguyễn Văn A', year: 1990, element: 'Kim', color: '#d4a24b' },
-  { name: 'Trần Thị B', year: 1995, element: 'Thủy', color: '#4a90d9' },
-  { name: 'Lê Minh C', year: 1988, element: 'Mộc', color: '#5aaa5a' },
-];
-
-const QUICK_TOOLS = [
-  { href: '/dashboard/today',   glyph: '日', label: 'Hôm Nay',    desc: 'Giờ tốt xấu' },
-  { href: '/dashboard/almanac', glyph: '曆', label: 'Vận Niên',   desc: 'Xem vận hạn' },
-  { href: '/dashboard/merit',   glyph: '功', label: 'Công Đức',   desc: 'Tích công hằng ngày' },
-  { href: '/dashboard/expert',  glyph: '師', label: 'Chuyên Gia', desc: 'Tư vấn trực tiếp' },
-];
-
 const REMINDERS = [
-  { icon: '🕯️', text: 'Hôm nay là ngày Rằm — nên thắp hương', type: 'lunar' },
-  { icon: '⏰', text: 'Giờ Thìn (7–9h) là giờ vàng hôm nay', type: 'hour' },
-  { icon: '📅', text: 'Ngày mai có sao Thái Bạch — tránh xuất hành', type: 'caution' },
+  { when: 'Ngày mai',       what: 'Mồng 1 âm lịch — nên lên chùa, ăn chay, phóng sinh',                   tag: 'Ngày lành' },
+  { when: 'Thứ 5 tuần này', what: 'Đến chùa lễ Phật, niệm Bồ Tát Quan Âm — nguyện cầu giải chướng',      tag: 'Đạo tràng' },
+  { when: 'Rằm tháng 4',   what: 'Đại lễ Phật Đản — tắm Phật, tụng kinh, hồi hướng',                     tag: 'Đại lễ' },
+  { when: 'Đầu tháng 5',   what: '14 ngày tịnh khẩu — giữ lời hòa ái, không vọng ngữ',                  tag: 'Tu tập' },
 ];
+
+const MODULES = [
+  { href: '/dashboard/niemphat',  label: 'Niệm Phật',        desc: 'Chuỗi 108 hạt' },
+  { href: '/dashboard/quedich',   label: 'Xăm Quan Âm',      desc: 'Bốc một lá xăm' },
+  { href: '/dashboard/thien',     label: 'Thiền quán',        desc: 'Tĩnh tâm 5–30 phút' },
+  { href: '/dashboard/tungkinh',  label: 'Tụng kinh',         desc: 'Các bài kinh nhật tụng' },
+  { href: '/dashboard/congduc',   label: 'Công Đức',          desc: 'Tích công hằng ngày' },
+  { href: '/dashboard/nguoithan', label: 'Người thân',        desc: 'Hồi hướng, cầu an' },
+  { href: '/dashboard/luanhoi',   label: 'Luân hồi nhân quả', desc: 'Tra nhân duyên đời trước' },
+  { href: '/dashboard/lixi',      label: 'Lì xì xuân',        desc: 'Phong bao phước lộc' },
+];
+
+function SealCorners({ color = '#d4a24b' }: { color?: string }) {
+  return (
+    <>
+      <span className="absolute -top-px -left-px w-4 h-4 border-t border-l pointer-events-none" style={{ borderColor: color }} />
+      <span className="absolute -top-px -right-px w-4 h-4 border-t border-r pointer-events-none" style={{ borderColor: color }} />
+      <span className="absolute -bottom-px -left-px w-4 h-4 border-b border-l pointer-events-none" style={{ borderColor: color }} />
+      <span className="absolute -bottom-px -right-px w-4 h-4 border-b border-r pointer-events-none" style={{ borderColor: color }} />
+    </>
+  );
+}
 
 export default function DashboardPage() {
   return (
-    <div className="max-w-6xl mx-auto space-y-6 animate-[fadeUp_0.5s_ease]">
+    <div className="max-w-5xl mx-auto px-5 md:px-8 py-6 md:py-8 space-y-6 animate-fade-up">
 
-      {/* Charts section */}
-      <section>
-        <div className="flex items-center justify-between mb-3">
-          <h2
-            className="text-lg"
-            style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-gold)' }}
-          >
-            命 Lá Số Của Bạn
-          </h2>
+      {/* Xam promo card */}
+      <div
+        className="relative overflow-hidden p-6"
+        style={{
+          background: 'linear-gradient(135deg, var(--color-ink-2), var(--color-ink-3), var(--color-ink-2))',
+          border: '1px solid rgba(212,162,75,0.4)',
+        }}
+      >
+        <SealCorners />
+        <div className="absolute -right-2 -bottom-4 font-brush select-none pointer-events-none text-[120px] leading-none" style={{ color: 'rgba(212,162,75,0.06)' }}>Xăm</div>
+        <div className="absolute right-4 top-4 font-brush select-none pointer-events-none text-2xl" style={{ color: 'rgba(212,162,75,0.3)' }}>QuánÂm</div>
+        <div className="relative">
+          <div className="font-brush text-3xl mb-2" style={{ color: 'var(--color-gold)' }}>Xăm · QuánÂm</div>
+          <div className="text-[11px] tracking-[0.25em] uppercase font-medium mb-1" style={{ color: 'var(--color-gold)' }}>Xăm Quan Âm · 100 thẻ</div>
+          <h3 className="font-serif text-2xl font-medium mb-2" style={{ color: 'var(--color-cream)' }}>
+            Một niệm thành tâm,{' '}
+            <span className="italic bg-gradient-to-br from-gold-bright to-gold-deep bg-clip-text text-transparent">một thẻ ứng nghiệm</span>
+          </h3>
+          <p className="text-sm leading-snug mb-4 max-w-md" style={{ color: 'var(--color-cream-dim)' }}>
+            Niệm danh hiệu Bồ Tát Quan Thế Âm, đặt câu hỏi rồi rút thẻ trong ống xăm — 100 thẻ ứng từ Phổ Đà Sơn.
+          </p>
           <Link
-            href="/dashboard/charts"
-            className="text-xs transition-opacity hover:opacity-70"
-            style={{ color: 'var(--color-cream-dim)' }}
+            href="/dashboard/quedich"
+            className="inline-block px-5 py-2.5 text-[13px] font-semibold tracking-[0.18em] uppercase transition-opacity hover:opacity-80"
+            style={{ background: 'linear-gradient(135deg, var(--color-gold-bright), var(--color-gold))', color: 'var(--color-ink)' }}
           >
-            Xem tất cả →
+            Rút xăm →
           </Link>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          {CHART_SAMPLES.map((c) => (
-            <div
-              key={c.name}
-              className="rounded-xl p-4 cursor-pointer transition-all duration-200 hover:scale-[1.02]"
-              style={{ background: 'var(--color-ink-2)', border: '1px solid rgba(212,162,75,0.2)' }}
-            >
-              <div
-                className="w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold mb-3"
-                style={{ background: `${c.color}22`, color: c.color }}
-              >
-                {c.name.charAt(0)}
-              </div>
-              <div className="text-sm font-medium" style={{ color: 'var(--color-cream)' }}>{c.name}</div>
-              <div className="text-xs mt-0.5" style={{ color: 'var(--color-cream-dim)' }}>
-                Năm {c.year} · Mệnh {c.element}
-              </div>
-            </div>
-          ))}
-
-          {/* Add new */}
-          <button
-            className="rounded-xl p-4 flex flex-col items-center justify-center gap-2 transition-all duration-200 hover:scale-[1.02] hover:opacity-80"
-            style={{
-              background: 'var(--color-ink-2)',
-              border: '1px dashed rgba(212,162,75,0.3)',
-              color: 'var(--color-cream-dim)',
-            }}
-          >
-            <span className="text-2xl">+</span>
-            <span className="text-xs">Thêm lá số</span>
-          </button>
-        </div>
-      </section>
-
-      {/* Today + Reminders row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-
-        {/* Today card */}
-        <div
-          className="rounded-xl p-5"
-          style={{ background: 'var(--color-ink-2)', border: '1px solid rgba(212,162,75,0.2)' }}
-        >
-          <h2
-            className="text-base mb-4"
-            style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-gold)' }}
-          >
-            日 Hôm Nay
-          </h2>
-
-          <div className="flex items-start gap-4">
-            <div
-              className="w-16 h-16 rounded-xl flex flex-col items-center justify-center flex-shrink-0"
-              style={{ background: 'rgba(212,162,75,0.1)', border: '1px solid rgba(212,162,75,0.3)' }}
-            >
-              <span className="text-2xl" style={{ fontFamily: 'var(--font-brush)', color: 'var(--color-gold)' }}>
-                甲
-              </span>
-              <span className="text-xs mt-0.5" style={{ color: 'var(--color-cream-dim)' }}>Giáp</span>
-            </div>
-
-            <div className="space-y-1.5">
-              <div>
-                <span className="text-xs" style={{ color: 'var(--color-cream-dim)' }}>Ngày Can Chi: </span>
-                <span className="text-sm" style={{ color: 'var(--color-cream)' }}>Giáp Tý</span>
-              </div>
-              <div>
-                <span className="text-xs" style={{ color: 'var(--color-cream-dim)' }}>Tốt: </span>
-                <span className="text-sm" style={{ color: '#5aaa5a' }}>Cúng tế, Xuất hành, Ký kết</span>
-              </div>
-              <div>
-                <span className="text-xs" style={{ color: 'var(--color-cream-dim)' }}>Tránh: </span>
-                <span className="text-sm" style={{ color: 'var(--color-red)' }}>Động thổ, Phá tường</span>
-              </div>
-            </div>
-          </div>
-
-          <Link
-            href="/dashboard/today"
-            className="mt-4 block text-center text-xs py-2 rounded-lg transition-colors"
-            style={{
-              background: 'rgba(212,162,75,0.1)',
-              color: 'var(--color-gold)',
-              border: '1px solid rgba(212,162,75,0.2)',
-            }}
-          >
-            Xem đầy đủ giờ tốt →
-          </Link>
-        </div>
-
-        {/* Reminders */}
-        <div
-          className="rounded-xl p-5"
-          style={{ background: 'var(--color-ink-2)', border: '1px solid rgba(212,162,75,0.2)' }}
-        >
-          <h2
-            className="text-base mb-4"
-            style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-gold)' }}
-          >
-            🔔 Nhắc Nhở
-          </h2>
-
-          <div className="space-y-3">
-            {REMINDERS.map((r, i) => (
-              <div
-                key={i}
-                className="flex items-start gap-3 p-3 rounded-lg"
-                style={{ background: 'rgba(255,255,255,0.03)' }}
-              >
-                <span className="text-lg leading-none mt-0.5">{r.icon}</span>
-                <p className="text-sm leading-relaxed" style={{ color: 'var(--color-cream-dim)' }}>
-                  {r.text}
-                </p>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
-      {/* Quick tools */}
+      {/* Module grid */}
       <section>
-        <h2
-          className="text-base mb-3"
-          style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-gold)' }}
-        >
-          ⚡ Truy Cập Nhanh
-        </h2>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          {QUICK_TOOLS.map((t) => (
+        <div className="text-[11px] tracking-[0.25em] uppercase font-medium mb-3" style={{ color: 'var(--color-gold)' }}>
+          Tra cứu nhanh
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {MODULES.map((m) => (
             <Link
-              key={t.href}
-              href={t.href}
-              className="rounded-xl p-4 flex flex-col gap-2 transition-all duration-200 hover:scale-[1.02]"
-              style={{ background: 'var(--color-ink-2)', border: '1px solid rgba(212,162,75,0.15)' }}
+              key={m.href}
+              href={m.href}
+              className="relative p-4 transition-all hover:scale-[1.02]"
+              style={{
+                background: 'var(--color-ink-2)',
+                border: '1px solid rgba(212,162,75,0.2)',
+              }}
             >
-              <span className="text-2xl">{t.glyph}</span>
-              <div>
-                <div className="text-sm font-medium" style={{ color: 'var(--color-cream)' }}>{t.label}</div>
-                <div className="text-xs mt-0.5" style={{ color: 'var(--color-cream-dim)' }}>{t.desc}</div>
-              </div>
+              <div className="font-serif text-base font-medium mb-0.5" style={{ color: 'var(--color-cream)' }}>{m.label}</div>
+              <div className="text-xs" style={{ color: 'var(--color-cream-dim)' }}>{m.desc}</div>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* Expert CTA */}
+      {/* Reminders */}
       <div
-        className="rounded-xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+        className="p-6"
+        style={{ background: 'var(--color-ink-2)', border: '1px solid rgba(212,162,75,0.2)' }}
+      >
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <div className="text-[11px] tracking-[0.25em] uppercase font-medium mb-1" style={{ color: 'var(--color-gold)' }}>Nhắc nhở</div>
+            <div className="font-serif text-xl font-medium" style={{ color: 'var(--color-cream)' }}>Tuần tới có gì đáng chú ý</div>
+          </div>
+          <button className="text-xs tracking-wider uppercase transition-colors hover:opacity-70" style={{ color: 'var(--color-cream-dim)' }}>
+            Xem cả tháng →
+          </button>
+        </div>
+        <ul className="divide-y" style={{ borderColor: 'rgba(212,162,75,0.1)' }}>
+          {REMINDERS.map((it, i) => (
+            <li key={i} className="flex items-start gap-4 py-3">
+              <div className="w-[110px] shrink-0">
+                <div className="text-[10px] tracking-[0.18em] uppercase font-medium" style={{ color: 'var(--color-gold)' }}>{it.tag}</div>
+                <div className="text-[13px]" style={{ color: 'var(--color-cream-dim)' }}>{it.when}</div>
+              </div>
+              <div className="flex-1 text-sm leading-snug" style={{ color: 'var(--color-cream)' }}>{it.what}</div>
+              <button className="text-xs shrink-0 hover:opacity-70 transition-opacity" style={{ color: 'var(--color-cream-dim)' }}>
+                Bỏ qua
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Teacher CTA */}
+      <div
+        className="relative p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
         style={{
-          background: 'linear-gradient(135deg, rgba(160,40,40,0.2), rgba(106,24,24,0.15))',
-          border: '1px solid rgba(160,40,40,0.3)',
+          background: 'linear-gradient(135deg, rgba(200,122,90,0.15), var(--color-ink-3))',
+          border: '1px solid rgba(200,122,90,0.4)',
         }}
       >
+        <span className="absolute -top-px -left-px w-4 h-4 border-t border-l pointer-events-none" style={{ borderColor: 'var(--color-lotus, #c87a5a)' }} />
+        <span className="absolute -bottom-px -right-px w-4 h-4 border-b border-r pointer-events-none" style={{ borderColor: 'var(--color-lotus, #c87a5a)' }} />
         <div>
-          <div
-            className="text-base font-medium mb-1"
-            style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-cream)' }}
-          >
-            師 Cần tư vấn chuyên sâu?
-          </div>
-          <p className="text-sm" style={{ color: 'var(--color-cream-dim)' }}>
-            Kết nối với các thầy phong thủy, tử vi hàng đầu
+          <div className="font-brush text-3xl mb-2" style={{ color: 'var(--color-lotus, #c87a5a)' }}>Thầy</div>
+          <div className="font-serif text-xl font-medium mb-1" style={{ color: 'var(--color-cream)' }}>Thỉnh giáo Pháp sư</div>
+          <p className="text-sm leading-snug max-w-md" style={{ color: 'var(--color-cream-dim)' }}>
+            Đặt lịch tham vấn 1-1 với thầy — 12 năm hộ niệm, giải nghiệp, hướng đạo.
           </p>
         </div>
-        <Link
-          href="/dashboard/expert"
-          className="px-5 py-2 rounded-lg text-sm font-semibold transition-opacity hover:opacity-80 flex-shrink-0"
-          style={{ background: 'var(--color-red)', color: 'var(--color-cream)', fontFamily: 'var(--font-sans)' }}
+        <button
+          className="px-5 py-2.5 text-sm font-semibold tracking-wider flex-shrink-0 transition-opacity hover:opacity-80"
+          style={{ background: 'linear-gradient(135deg, var(--color-gold-bright), var(--color-gold))', color: 'var(--color-ink)' }}
         >
-          Xem chuyên gia
-        </Link>
+          Đặt lịch 60 phút
+        </button>
       </div>
 
     </div>

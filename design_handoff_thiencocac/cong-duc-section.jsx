@@ -18,8 +18,8 @@ function CongDucHero() {
       <span className="absolute -bottom-px -right-px w-6 h-6 border-b border-r border-gold"></span>
 
       {/* background glyph */}
-      <div className="absolute -right-8 -bottom-10 font-brush text-[220px] text-gold/[0.04] select-none pointer-events-none">功德</div>
-      <div className="absolute -left-4 top-4 font-brush text-[80px] text-gold/[0.05] select-none pointer-events-none">蓮</div>
+      <div className="absolute -right-8 -bottom-10 font-brush text-[220px] text-gold/[0.04] select-none pointer-events-none">Công Đức</div>
+      <div className="absolute -left-4 top-4 font-brush text-[80px] text-gold/[0.05] select-none pointer-events-none">Sen</div>
 
       <div className="relative grid md:grid-cols-[auto_1fr] gap-8 md:gap-12 p-6 md:p-10 items-center">
         {/* LOTUS */}
@@ -29,10 +29,10 @@ function CongDucHero() {
             {/* vòng tròn xoay chậm */}
             <div className="absolute inset-[-20px] border border-gold/15 rounded-full pointer-events-none"
                  style={{ animation: 'rotate 120s linear infinite' }}>
-              <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 text-gold/60 font-brush text-xs">卯</span>
-              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 text-gold/60 font-brush text-xs">酉</span>
-              <span className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 text-gold/60 font-brush text-xs">子</span>
-              <span className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 text-gold/60 font-brush text-xs">午</span>
+              <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 text-gold/60 font-brush text-xs">Mão</span>
+              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 text-gold/60 font-brush text-xs">Dậu</span>
+              <span className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 text-gold/60 font-brush text-xs">Tử</span>
+              <span className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 text-gold/60 font-brush text-xs">Ngọ</span>
             </div>
           </div>
         </div>
@@ -54,7 +54,7 @@ function CongDucHero() {
                 <span className="font-serif text-4xl md:text-5xl font-medium bg-gradient-to-br from-gold-bright to-gold bg-clip-text text-transparent">
                   {state.balance.toLocaleString('vi-VN')}
                 </span>
-                <span className="font-brush text-gold text-xl">功</span>
+                <span className="font-brush text-gold text-xl">Đức</span>
               </div>
             </div>
             <div>
@@ -110,7 +110,7 @@ function DailyRituals({ onOpenIncense, onOpenMeditation }) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
         <RitualCard
-          glyph="到"
+          glyph=""
           title="Điểm danh sáng sớm"
           subtitle="Chạm một cái để khởi ngày mới an lành"
           reward={10}
@@ -118,7 +118,7 @@ function DailyRituals({ onOpenIncense, onOpenMeditation }) {
           onClick={handleCheckin}
         />
         <RitualCard
-          glyph="香"
+          glyph="Hương"
           title="Đốt nén hương"
           subtitle="Thắp hương, tịnh tâm trong 8 giây"
           reward={15}
@@ -126,7 +126,7 @@ function DailyRituals({ onOpenIncense, onOpenMeditation }) {
           onClick={onOpenIncense}
         />
         <RitualCard
-          glyph="禪"
+          glyph="Thiền"
           title="Thiền niệm"
           subtitle="Ngồi tĩnh lặng 5-15 phút trọn vẹn"
           reward={20}
@@ -134,7 +134,7 @@ function DailyRituals({ onOpenIncense, onOpenMeditation }) {
           onClick={onOpenMeditation}
         />
         <RitualCard
-          glyph="齋"
+          glyph=""
           title="Ăn chay ngày Rằm, Mùng 1"
           subtitle="Hôm nay không phải Rằm/Mùng 1 âm lịch"
           reward={25}
@@ -147,7 +147,7 @@ function DailyRituals({ onOpenIncense, onOpenMeditation }) {
 
       {/* streak bonus indicator */}
       <div className="mt-4 flex items-center gap-3 px-4 py-3 border border-gold/15 bg-ink-2/50">
-        <span className="font-brush text-gold text-xl">續</span>
+        <span className="font-brush text-gold text-xl">Tiếp</span>
         <div className="flex-1">
           <div className="text-[11px] tracking-[0.2em] uppercase text-gold font-medium">Thưởng chuỗi</div>
           <div className="text-[13px] text-cream-dim">
@@ -165,11 +165,11 @@ function DailyRituals({ onOpenIncense, onOpenMeditation }) {
 // ─────────────────────────────────────────────────────────
 
 const SHOP_ITEMS = [
-  { key:'deepLuanGiai',   glyph:'運', name:'Luận giải vận niên sâu',      desc:'AI bình giải chi tiết 12 tháng vận niên, có hành động khuyên dùng cho từng giai đoạn.', price:80 },
-  { key:'detailedHours',  glyph:'時', name:'Giờ cát hung chi tiết',        desc:'Xem lý do từng giờ tốt/xấu, việc nên làm trong từng khung 2 tiếng.', price:50 },
-  { key:'weddingDate',    glyph:'婚', name:'Ngày tốt cho sự kiện lớn',     desc:'Tra ngày cưới hỏi, khai trương, động thổ — tổng hợp 30 ngày cát nhất.', price:120 },
-  { key:'extraChart',     glyph:'命', name:'Thêm lá số thứ 6',            desc:'Vượt quota 5 lá số miễn phí, thêm người thân hoặc đối tác.', price:150 },
-  { key:'consultVoucher', glyph:'師', name:'Voucher tư vấn 1-1',          desc:'Giảm 30% phiên tư vấn 60 phút với thầy Minh Châu.', price:200 },
+  { key:'deepLuanGiai',   glyph:'', name:'Luận giải vận niên sâu',      desc:'AI bình giải chi tiết 12 tháng vận niên, có hành động khuyên dùng cho từng giai đoạn.', price:80 },
+  { key:'detailedHours',  glyph:'', name:'Giờ cát hung chi tiết',        desc:'Xem lý do từng giờ tốt/xấu, việc nên làm trong từng khung 2 tiếng.', price:50 },
+  { key:'weddingDate',    glyph:'', name:'Ngày tốt cho sự kiện lớn',     desc:'Tra ngày cưới hỏi, khai trương, động thổ — tổng hợp 30 ngày cát nhất.', price:120 },
+  { key:'extraChart',     glyph:'Mệnh', name:'Thêm lá số thứ 6',            desc:'Vượt quota 5 lá số miễn phí, thêm người thân hoặc đối tác.', price:150 },
+  { key:'consultVoucher', glyph:'Thầy', name:'Voucher tư vấn 1-1',          desc:'Giảm 30% phiên tư vấn 60 phút với thầy Minh Châu.', price:200 },
 ];
 
 function ShopGrid() {
@@ -204,7 +204,7 @@ function ShopGrid() {
                   <p className="text-[12.5px] text-cream-dim leading-snug mb-3">{item.desc}</p>
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-1.5">
-                      <span className="font-brush text-gold text-sm">功</span>
+                      <span className="font-brush text-gold text-sm">Đức</span>
                       <span className={`text-sm font-medium tabular-nums ${owned ? 'text-cream-dim line-through' : 'text-gold-bright'}`}>
                         {item.price}
                       </span>
@@ -264,7 +264,7 @@ function CungDuongQuiet({ onClick }) {
   return (
     <button onClick={onClick}
       className="group flex items-center gap-3 text-cream-dim hover:text-gold-bright transition-colors text-left py-3">
-      <span className="font-brush text-2xl text-gold/70 group-hover:text-gold">香</span>
+      <span className="font-brush text-2xl text-gold/70 group-hover:text-gold">Hương</span>
       <div>
         <div className="text-[11px] tracking-[0.22em] uppercase">Cúng dường</div>
         <div className="text-[13px] italic">để nhận thêm công đức, hộ trì trang tri thức này</div>
@@ -290,7 +290,7 @@ function CungDuongModal({ open, onClose }) {
         <span className="absolute -bottom-px -right-px w-5 h-5 border-b border-r border-gold"></span>
 
         <div className="text-center mb-6">
-          <div className="font-brush text-gold text-3xl mb-1">香 · 供</div>
+          <div className="font-brush text-gold text-3xl mb-1">Hương · Cúng</div>
           <h3 className="font-serif text-2xl text-cream font-medium mb-1">Cúng dường</h3>
           <p className="text-[13px] text-cream-dim italic max-w-sm mx-auto">
             Chút tâm thành giúp duy trì Thiên Cơ Các — và nhận lại công đức để dùng vào tính năng.
@@ -304,7 +304,7 @@ function CungDuongModal({ open, onClose }) {
                 t.popular ? 'border-gold bg-gold/5 hover:bg-gold/10' : 'border-gold/25 hover:border-gold/60'
               }`}>
               <div className="flex items-center gap-3">
-                <span className="font-brush text-gold text-2xl">願</span>
+                <span className="font-brush text-gold text-2xl">Nguyện</span>
                 <div className="text-left">
                   <div className="font-serif text-lg text-cream">{t.label}</div>
                   <div className="text-[12px] text-gold-bright">+{t.duc.toLocaleString('vi-VN')} công đức</div>

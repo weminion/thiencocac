@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Be_Vietnam_Pro, Ma_Shan_Zheng } from "next/font/google";
+import { Cormorant_Garamond, Be_Vietnam_Pro, Dancing_Script } from "next/font/google";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -15,15 +15,15 @@ const beVietnam = Be_Vietnam_Pro({
   weight: ["300", "400", "500", "600", "700"],
 });
 
-const maShanZheng = Ma_Shan_Zheng({
-  variable: "--font-ma-shan",
-  subsets: ["latin"],
-  weight: "400",
+const dancingScript = Dancing_Script({
+  variable: "--font-dancing",
+  subsets: ["latin", "vietnamese"],
+  weight: ["500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Thiên Cơ Các — Tử vi & Phong thuỷ",
-  description: "Tra cứu tử vi, phong thủy, ngũ hành chuyên sâu theo đạo học phương Đông.",
+  title: "Thiên Cơ Các — Phật pháp & Tu tập",
+  description: "Không gian tu tập cá nhân: niệm Phật, xăm Quan Âm, hồi hướng, thiền quán, tụng kinh.",
 };
 
 export default function RootLayout({
@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html
       lang="vi"
-      className={`${cormorant.variable} ${beVietnam.variable} ${maShanZheng.variable} h-full`}
+      className={`${cormorant.variable} ${beVietnam.variable} ${dancingScript.variable} h-full`}
     >
       <body className="min-h-full antialiased">{children}</body>
     </html>

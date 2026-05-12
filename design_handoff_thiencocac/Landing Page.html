@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Thiên Cơ Các · 天機閣 — Tailwind Edition</title>
+<title>Thiên Cơ Các — Tịnh tâm, hồi hướng, an lạc</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet" />
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -14,15 +14,18 @@ tailwind.config = {
   theme: {
     extend: {
       colors: {
-        ink: { DEFAULT: '#0a0806', 2: '#14100a', 3: '#1f1812' },
-        gold: { DEFAULT: '#d4a24b', bright: '#f4cf73', deep: '#8a6a2a' },
-        red: { DEFAULT: '#a02828', deep: '#6a1818' },
-        cream: { DEFAULT: '#f5ecd9', dim: '#c9bd9e' }
+        ink: { DEFAULT: '#14100a', 2: '#1c160e', 3: '#2a1f12' },
+        wood: { DEFAULT: '#3a2418', 2: '#4a2e1c', light: '#6a4628' },
+        saffron: { DEFAULT: '#d4a04a', bright: '#e6b85a', deep: '#a07020' },
+        gold: { DEFAULT: '#d4a04a', bright: '#e6b85a', deep: '#a07020' },
+        lotus: { DEFAULT: '#c87a5a', deep: '#a85838' },
+        red: { DEFAULT: '#c87a5a', deep: '#a85838' },
+        cream: { DEFAULT: '#f0e4cc', dim: '#c9b896' }
       },
       fontFamily: {
         serif: ['"Cormorant Garamond"', 'serif'],
         sans: ['"Be Vietnam Pro"', 'sans-serif'],
-        brush: ['"Ma Shan Zheng"', 'serif']
+        brush: ['"Dancing Script"', 'serif']
       },
       animation: {
         float: 'float 12s ease-in-out infinite',
@@ -63,7 +66,7 @@ tailwind.config = {
         radial-gradient(1px 1px at 90% 40%, rgba(244,207,115,0.6), transparent);
     }
   }
-  body { font-family: 'Be Vietnam Pro', sans-serif; background: #0a0806; color: #f5ecd9; }
+  body { font-family: 'Be Vietnam Pro', sans-serif; background: #14100a; color: #f0e4cc; }
   html { scroll-behavior: smooth; }
   input[type=number]::-webkit-inner-spin-button,
   input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
@@ -74,13 +77,13 @@ tailwind.config = {
 
 <script>
 window.TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "heroKicker": "天機閣 · Thiên Cơ Các",
-  "heroTitle": "Thiên cơ khai mở, nhân duyên tỏ tường",
-  "heroGoldWord": "tỏ tường",
-  "heroSub": "Xem ngày tốt kinh doanh, tra mệnh hợp khắc, luận vận niên 2026 — tất cả trong một nơi, dựa trên cổ pháp truyền thống hơn ngàn năm.",
-  "heroCTA": "Khai mở thiên cơ",
-  "primaryGold": "#d4a24b",
-  "accentRed": "#a02828"
+  "heroKicker": "Thiên Cơ · Tịnh phòng tâm linh",
+  "heroTitle": "Tịnh tâm an lạc, hồi hướng vô biên",
+  "heroGoldWord": "an lạc",
+  "heroSub": "Niệm Phật 108 hạt, xăm Quan Âm 100 thẻ, soi nghiệp lục đạo theo cổ pháp Phật giáo — một nơi để tâm bạn nương tựa giữa đời thường.",
+  "heroCTA": "Vào tịnh phòng",
+  "primaryGold": "#d4a04a",
+  "accentRed": "#c87a5a"
 }/*EDITMODE-END*/;
 </script>
 
@@ -89,6 +92,7 @@ window.TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 
 <script src="ngu-hanh.js"></script>
-<script type="text/babel" src="tailwind-components.jsx"></script>
+<script type="text/babel" src="tra-tuoi-section.jsx"></script>
+<script type="text/babel" src="tailwind-components-v2.jsx"></script>
 </body>
 </html>

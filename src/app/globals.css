@@ -14,10 +14,20 @@
   --color-cream:       #f5ecd9;
   --color-cream-dim:   #c9bd9e;
 
+  /* Color aliases */
+  --color-saffron:        #d4a04a;
+  --color-saffron-bright: #e6b85a;
+  --color-saffron-deep:   #a07020;
+  --color-lotus:          #c87a5a;
+  --color-lotus-deep:     #a85838;
+  --color-wood:           #3a2418;
+  --color-wood-2:         #4a2e1c;
+  --color-wood-light:     #6a4628;
+
   /* Typography — var() trỏ tới next/font variables trong layout.tsx */
   --font-serif:  var(--font-cormorant), "Cormorant Garamond", serif;
   --font-sans:   var(--font-be-vietnam), "Be Vietnam Pro", sans-serif;
-  --font-brush:  var(--font-ma-shan), "Ma Shan Zheng", serif;
+  --font-brush:  var(--font-dancing), "Dancing Script", cursive;
 
   /* Animations */
   --animate-float:           float 12s ease-in-out infinite;

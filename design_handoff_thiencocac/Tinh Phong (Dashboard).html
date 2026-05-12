@@ -3,25 +3,28 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Thư Phòng · Thiên Cơ Các</title>
+<title>Tịnh Phòng · Thiên Cơ Các</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet" />
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
 tailwind.config = {
   theme: { extend: {
     colors: {
-      ink: { DEFAULT: '#0a0806', 2: '#14100a', 3: '#1f1812' },
-      gold: { DEFAULT: '#d4a24b', bright: '#f4cf73', deep: '#8a6a2a' },
-      red: { DEFAULT: '#a02828', deep: '#6a1818' },
-      cream: { DEFAULT: '#f5ecd9', dim: '#c9bd9e' }
+      ink: { DEFAULT: '#14100a', 2: '#1c160e', 3: '#2a1f12' },
+      wood: { DEFAULT: '#3a2418', 2: '#4a2e1c', light: '#6a4628' },
+      saffron: { DEFAULT: '#d4a04a', bright: '#e6b85a', deep: '#a07020' },
+      gold: { DEFAULT: '#d4a04a', bright: '#e6b85a', deep: '#a07020' },
+      lotus: { DEFAULT: '#c87a5a', deep: '#a85838' },
+      red: { DEFAULT: '#c87a5a', deep: '#a85838' },
+      cream: { DEFAULT: '#f0e4cc', dim: '#c9b896' }
     },
     fontFamily: {
       serif: ['"Cormorant Garamond"', 'serif'],
       sans: ['"Be Vietnam Pro"', 'sans-serif'],
-      brush: ['"Ma Shan Zheng"', 'serif']
+      brush: ['"Dancing Script"', 'cursive']
     },
     animation: {
       'rotate-slow': 'rotate 80s linear infinite',
@@ -35,7 +38,7 @@ tailwind.config = {
 };
 </script>
 <style type="text/tailwindcss">
-  body { font-family: 'Be Vietnam Pro', sans-serif; background: #0a0806; color: #f5ecd9; }
+  body { font-family: 'Be Vietnam Pro', sans-serif; background: #14100a; color: #f0e4cc; }
   html { scroll-behavior: smooth; }
 </style>
 </head>
@@ -50,30 +53,40 @@ tailwind.config = {
 <script type="text/babel" src="cong-duc.jsx"></script>
 <script type="text/babel" src="cong-duc-ui.jsx"></script>
 <script type="text/babel" src="cong-duc-section.jsx"></script>
+<script src="xam-quan-am.js"></script>
+<script type="text/babel" src="xam-quan-am-section.jsx"></script>
+<script type="text/babel" src="niem-phat-section.jsx"></script>
+<script type="text/babel" src="luan-hoi-section.jsx"></script>
+<script type="text/babel" src="la-so-hom-nay.jsx"></script>
+<script type="text/babel" src="nguoi-than-section.jsx"></script>
+<script type="text/babel" src="dat-ten-section.jsx"></script>
+<script type="text/babel" src="li-xi-section.jsx"></script>
+<script type="text/babel" src="thien-quan-section.jsx"></script>
+<script type="text/babel" src="tung-kinh-section.jsx"></script>
 <script type="text/babel">
 const { useState, useMemo } = React;
 
 const CHARTS = [
-  { id:1, name:'Bạn', rel:'Chủ mệnh', year:1992, gender:'nam', avatar:'我', pinned:true },
-  { id:2, name:'Minh Anh', rel:'Vợ', year:1994, gender:'nu', avatar:'妻' },
-  { id:3, name:'Bé An', rel:'Con trai', year:2020, gender:'nam', avatar:'子' },
-  { id:4, name:'Anh Tuấn', rel:'Đối tác', year:1985, gender:'nam', avatar:'友' }
+  { id:1, name:'Bạn', rel:'Chủ mệnh', year:1992, gender:'nam', avatar:'Tôi', pinned:true },
+  { id:2, name:'Minh Anh', rel:'Vợ', year:1994, gender:'nu', avatar:'Vợ' },
+  { id:3, name:'Bé An', rel:'Con trai', year:2020, gender:'nam', avatar:'Con' },
+  { id:4, name:'Anh Tuấn', rel:'Đối tác', year:1985, gender:'nam', avatar:'Bạn' }
 ];
 
 const HISTORY = [
-  { date:'20/04/2026', type:'Tra mệnh', detail:'Năm sinh 1994 · Mệnh Mộc' },
-  { date:'19/04/2026', type:'Xem ngày', detail:'Khai trương tháng 5/2026' },
-  { date:'17/04/2026', type:'Hợp tuổi', detail:'1992 × 1994 — Tương sinh' },
-  { date:'15/04/2026', type:'Luận vận niên', detail:'Vận niên 2026 cho Mệnh Kim' },
-  { date:'10/04/2026', type:'Tra mệnh', detail:'Năm sinh 1985 · Mệnh Hỏa' }
+  { date:'20/04/2026', type:'Xăm Quan Âm', detail:'Thẻ số 47 · Trung cát' },
+  { date:'19/04/2026', type:'Niệm Phật', detail:'108 biến • Hồi hướng cha mẹ' },
+  { date:'17/04/2026', type:'Tra mệnh', detail:'Sinh năm 1994 · Mệnh Mộc' },
+  { date:'15/04/2026', type:'Thiền quán', detail:'25 phút • Quan hơi thở' },
+  { date:'10/04/2026', type:'Lục đạo', detail:'Luận nghiệp kết • Tuổi 1985' }
 ];
 
 const TODAY = {
   date: 'Thứ Hai, 20/04/2026',
-  canChi: 'Giáp Tý · Ngày Hải Trung Kim',
-  stars: 'Thiên Đức · Nguyệt Đức',
-  good: ['Khai trương', 'Ký hợp đồng', 'Xuất hành phía Tây', 'Gặp quý nhân'],
-  bad: ['Cưới hỏi', 'Động thổ', 'Di chuyển phía Nam'],
+  canChi: 'Mồng 3 tháng 3 âm • Giáp Tý',
+  stars: 'Phật Đản cận • An lành',
+  good: ['Lên chùa lễ Phật', 'Ăn chay, phóng sinh', 'Tụng kinh, niệm Phật', 'Bố thí, cúng dường'],
+  bad: ['Sát sinh, sai sai', 'Vọng ngữ, nóng giận', 'Uống rượu, lậu yếu'],
   hours: [
     { h:'Tý (23-1h)', luck:'bad' }, { h:'Sửu (1-3h)', luck:'good' },
     { h:'Dần (3-5h)', luck:'good' }, { h:'Mão (5-7h)', luck:'bad' },
@@ -84,16 +97,42 @@ const TODAY = {
   ]
 };
 
+const NAV_ICONS = {
+  home: 'M12 2.5l9 7.5v10.5a1 1 0 01-1 1h-5v-7h-6v7H4a1 1 0 01-1-1V10l9-7.5z',
+  today: 'M12 4a8 8 0 100 16 8 8 0 000-16zm0 3v5l3.5 2',
+  congduc: 'M12 3l2.6 5.6L20.5 9.5l-4.3 4 1 5.9L12 16.6l-5.2 2.8 1-5.9-4.3-4 5.9-.9L12 3z',
+  quedich: 'M5 3h11l3 3v15H5V3zm3 6h8M8 13h8M8 17h5',
+  luanhoi: 'M21 12a9 9 0 11-3.3-6.9M21 4v5h-5',
+  niemphat: 'M12 3a4 4 0 014 4c0 1.6-1 3-2 3.5 2 1 4 3.5 4 6.5v4H6v-4c0-3 2-5.5 4-6.5-1-.5-2-1.9-2-3.5a4 4 0 014-4z',
+  thien: 'M12 14c-3 0-5-2-5-4s2-4 5-4 5 2 5 4-2 4-5 4zm-7 5c2-2 4-3 7-3s5 1 7 3M9 8c1-1 2-1.5 3-1.5s2 .5 3 1.5',
+  tungkinh: 'M3 5h7a4 4 0 014 4v11H7a4 4 0 01-4-4V5zm18 0h-7a4 4 0 00-4 4v11h7a4 4 0 004-4V5z',
+  nguoithan: 'M12 21s-7-4.5-7-10a4 4 0 017-2.7A4 4 0 0119 11c0 5.5-7 10-7 10z',
+  lixi: 'M3 8h18v3H3V8zm1 3h16v10H4V11zm8-3V5a2 2 0 114 0 2 2 0 01-2 3M12 8V5a2 2 0 10-4 0 2 2 0 002 3M12 8v13',
+  history: 'M3 12a9 9 0 109-9M3 12V3M3 12h9M12 7v5l3 2',
+  sages: 'M12 4a3 3 0 110 6 3 3 0 010-6zm-5 16c0-3 2-5 5-5s5 2 5 5M7 9c-2 0-3 1-3 3v2m13-5c2 0 3 1 3 3v2'
+};
+
+function NavIcon({ id, className }) {
+  const d = NAV_ICONS[id];
+  if (!d) return null;
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d={d}></path>
+    </svg>
+  );
+}
+
 function Sidebar({ active, onSelect, mobileOpen, onCloseMobile, onOpenCongDuc }) {
   const items = [
-    { id:'home', icon:'☯', label:'Thư phòng' },
-    { id:'charts', icon:'命', label:'Lá số' },
-    { id:'today', icon:'日', label:'Hôm nay' },
-    { id:'congduc', icon:'功', label:'Công Đức' },
-    { id:'calendar', icon:'曆', label:'Vận niên' },
-    { id:'history', icon:'跡', label:'Lịch sử' },
-    { id:'notes', icon:'書', label:'Ghi chú' },
-    { id:'sages', icon:'師', label:'Chuyên gia' }
+    { id:'home', label:'Tịnh phòng' },
+    { id:'congduc', label:'Công Đức' },
+    { id:'quedich', label:'Xăm Quan Âm' },
+    { id:'luanhoi', label:'Luân hồi nhân quả' },
+    { id:'niemphat', label:'Niệm Phật' },
+    { id:'thien', label:'Thiền quán' },
+    { id:'tungkinh', label:'Tụng kinh' },
+    { id:'nguoithan', label:'Người thân' },
+    { id:'lixi', label:'Lì xì xuân' }
   ];
   return (
     <>
@@ -103,14 +142,14 @@ function Sidebar({ active, onSelect, mobileOpen, onCloseMobile, onOpenCongDuc })
         <img src="assets/logo.jpg" className="w-9 h-9 rounded-full object-cover border border-gold/40"/>
         <div>
           <div className="font-serif text-[17px] font-semibold text-cream leading-tight">Thiên Cơ Các</div>
-          <div className="text-[10px] text-gold tracking-[0.2em] uppercase">Thư phòng</div>
+          <div className="text-[10px] text-gold tracking-[0.2em] uppercase">Tịnh phòng</div>
         </div>
       </a>
       <nav className="flex-1 p-3 flex flex-col gap-1">
         {items.map(it => (
           <button key={it.id} onClick={() => { onSelect(it.id); onCloseMobile && onCloseMobile(); }}
             className={`flex items-center gap-3 px-3 py-2.5 text-[14px] font-medium rounded-sm transition-all text-left ${active === it.id ? 'bg-gradient-to-r from-gold/20 to-transparent text-gold-bright border-l-2 border-gold' : 'text-cream-dim hover:text-cream hover:bg-ink-3'}`}>
-            <span className={`font-brush text-xl w-7 text-center ${active === it.id ? 'text-gold' : 'text-gold/60'}`}>{it.icon}</span>
+            <NavIcon id={it.id} className={`w-5 h-5 shrink-0 ${active === it.id ? 'text-gold' : 'text-gold/60'}`}/>
             <span>{it.label}</span>
           </button>
         ))}
@@ -129,10 +168,10 @@ function Sidebar({ active, onSelect, mobileOpen, onCloseMobile, onOpenCongDuc })
         </div>
       </div>
       <div className="p-4 border-t border-gold/20 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-bright to-gold-deep flex items-center justify-center font-brush text-ink text-lg">我</div>
+        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-bright to-gold-deep flex items-center justify-center font-brush text-ink text-base">An</div>
         <div className="flex-1 min-w-0">
           <div className="text-sm text-cream font-medium truncate">Nguyễn Minh</div>
-          <div className="text-[11px] text-cream-dim">Mệnh Kiếm Phong Kim</div>
+          <div className="text-[11px] text-cream-dim">Sinh năm 1992 · Thiện căn</div>
         </div>
         <button className="text-cream-dim hover:text-gold-bright text-lg">⚙</button>
       </div>
@@ -151,13 +190,13 @@ function TopBar({ userName, onMenuOpen }) {
         <div className="min-w-0">
           <div className="text-[10px] md:text-[11px] tracking-[0.2em] md:tracking-[0.25em] uppercase text-gold font-medium mb-1">Thỉnh giáo, {userName}</div>
           <h1 className="font-serif text-[20px] md:text-[32px] font-medium text-cream leading-tight">
-            Hôm nay là ngày <span className="italic bg-gradient-to-br from-gold-bright to-gold-deep bg-clip-text text-transparent">cát</span> — thuận việc khởi sự
+            Hôm nay là ngày <span className="italic bg-gradient-to-br from-gold-bright to-gold-deep bg-clip-text text-transparent">an</span> — thuận tịnh tâm, hồi hướng
           </h1>
         </div>
       </div>
       <div className="flex gap-2 md:gap-3 items-center flex-shrink-0">
         <button className="hidden md:flex px-4 py-2.5 border border-gold/40 text-cream-dim text-sm hover:border-gold hover:text-gold-bright transition-colors items-center gap-2">
-          <span className="font-brush text-gold">通</span> Thông báo
+          <span className="font-brush text-gold">Tin</span> Thông báo
           <span className="bg-red text-cream text-[10px] px-1.5 rounded-full font-semibold">3</span>
         </button>
         <button className="px-3 md:px-5 py-2 md:py-2.5 bg-gradient-to-br from-gold-bright to-gold text-ink text-[13px] md:text-sm font-semibold flex items-center gap-1.5">
@@ -221,7 +260,7 @@ function TodayCard() {
       <div className="grid grid-cols-2 gap-4 mb-5">
         <div>
           <div className="text-[10px] tracking-[0.2em] uppercase text-emerald-400 mb-2 font-medium flex items-center gap-1.5">
-            <span className="font-brush text-base">吉</span> Nên làm
+            <span className="font-brush text-base">Nên</span> Nên làm
           </div>
           <ul className="space-y-1.5">
             {TODAY.good.map(g => (
@@ -233,7 +272,7 @@ function TodayCard() {
         </div>
         <div>
           <div className="text-[10px] tracking-[0.2em] uppercase text-red-400 mb-2 font-medium flex items-center gap-1.5">
-            <span className="font-brush text-base">凶</span> Nên tránh
+            <span className="font-brush text-base">Kỵ</span> Nên tránh
           </div>
           <ul className="space-y-1.5">
             {TODAY.bad.map(b => (
@@ -246,7 +285,7 @@ function TodayCard() {
       </div>
 
       <div className="pt-4 border-t border-gold/20">
-        <div className="text-[10px] tracking-[0.2em] uppercase text-gold mb-2.5 font-medium">Giờ cát hung trong ngày</div>
+        <div className="text-[10px] tracking-[0.2em] uppercase text-gold mb-2.5 font-medium">Giờ thanh tịnh trong ngày</div>
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5">
           {TODAY.hours.map(h => {
             const color = h.luck === 'good' ? 'border-emerald-500/40 text-emerald-300 bg-emerald-500/10'
@@ -264,10 +303,10 @@ function TodayCard() {
 
 function QuickTools() {
   const tools = [
-    { glyph:'卜', name:'Tra mệnh nhanh', desc:'Nhập ngày sinh' },
-    { glyph:'日', name:'Xem ngày tốt', desc:'Chọn ngày cát' },
-    { glyph:'合', name:'Hợp tuổi', desc:'So hai lá số' },
-    { glyph:'方', name:'Phương hướng', desc:'Bố trí nhà' }
+    { glyph:'Xăm', name:'Xăm Quan Âm', desc:'Bốc một lá xăm' },
+    { glyph:'Phật', name:'Niệm Phật', desc:'Chuỗi 108 hạt' },
+    { glyph:'Thiền', name:'Thiền quán', desc:'Tĩnh tâm 5-30 phút' },
+    { glyph:'Sám', name:'Sám hối', desc:'Hồi hướng công đức' }
   ];
   return (
     <div className="grid grid-cols-2 gap-3">
@@ -288,10 +327,10 @@ function QuickTools() {
 
 function Reminders() {
   const items = [
-    { when:'Ngày mai', what:'Giờ Dần (3-5h) — hợp xuất hành phương Tây', tag:'Cát giờ' },
-    { when:'Thứ 5 tuần này', what:'Ngày tốt ký hợp đồng tài chính', tag:'Cơ hội' },
-    { when:'Chủ nhật 26/04', what:'Tránh khởi công, động thổ — Tam nương sát', tag:'Cảnh báo' },
-    { when:'Đầu tháng 5', what:'Vận quý nhân — nên gặp đối tác cũ', tag:'Quý nhân' }
+    { when:'Ngày mai', what:'Mồng 1 âm lịch — nên lên chùa, ăn chay, phóng sinh', tag:'Ngày lành' },
+    { when:'Thứ 5 tuần này', what:'Đến chùa lễ Phật, niệm Bồ Tát Quan Âm — nguyện cầu giải chướng', tag:'Đạo tràng' },
+    { when:'Rằm tháng 4', what:'Đại lễ Phật Đản — tắm Phật, tụng kinh, hồi hướng', tag:'Đại lễ' },
+    { when:'Đầu tháng 5', what:'14 ngày tịnh khẩu — giữ lời hòa ái, không vọng ngữ', tag:'Tu tập' }
   ];
   return (
     <div className="bg-ink-2 border border-gold/20 p-6">
@@ -375,12 +414,15 @@ function AppInner() {
       <main className="flex-1 min-w-0">
         <TopBar userName="Minh" onMenuOpen={() => setMenuOpen(true)}/>
 
-        {active === 'congduc' ? <CongDucPage/> : (<>
+        {active === 'congduc' ? <CongDucPage/> : active === 'quedich' ? <XamQuanAmPage/> : active === 'niemphat' ? <NiemPhatPage/> : active === 'luanhoi' ? <LuanHoiPage/> : active === 'thien' && window.ThienQuanPage ? <window.ThienQuanPage/> : active === 'tungkinh' && window.TungKinhPage ? <window.TungKinhPage/> : active === 'nguoithan' && window.NguoiThanPage ? <window.NguoiThanPage/> : active === 'datten' && window.DatTenPage ? <window.DatTenPage/> : active === 'lixi' && window.LiXiPage ? <window.LiXiPage/> : (<>
+        <div className="px-5 md:px-10 pt-6 md:pt-8">
+          <XamPromoCard onOpen={() => setActive('quedich')}/>
+        </div>
         <ChartsSection/>
 
         <section className="px-5 md:px-10 pb-10 grid grid-cols-1 lg:grid-cols-3 gap-5 md:gap-6">
           <div className="lg:col-span-2 flex flex-col gap-5 md:gap-6">
-            <TodayCard/>
+            {window.LaSoHomNayCard ? <window.LaSoHomNayCard/> : <TodayCard/>}
             <Reminders/>
           </div>
           <div className="flex flex-col gap-5 md:gap-6">
@@ -390,13 +432,15 @@ function AppInner() {
               </div>
               <QuickTools/>
             </div>
+            <NiemPhatWidget onOpen={() => setActive('niemphat')}/>
+            <LuanHoiWidget onOpen={() => setActive('luanhoi')}/>
             <HistoryList/>
-            <div className="bg-gradient-to-br from-red/15 to-ink-3 border border-red/40 p-6 relative">
-              <span className="absolute -top-px -left-px w-4 h-4 border-t border-l border-red"></span>
-              <span className="absolute -bottom-px -right-px w-4 h-4 border-b border-r border-red"></span>
-              <div className="font-brush text-red text-3xl mb-2">師</div>
-              <div className="font-serif text-xl text-cream font-medium mb-1">Thỉnh giáo chuyên gia</div>
-              <div className="text-sm text-cream-dim leading-snug mb-4">Đặt lịch 1-1 với thầy Minh Châu — 12 năm kinh nghiệm Tử vi, Phong thủy Bát trạch.</div>
+            <div className="bg-gradient-to-br from-lotus/15 to-ink-3 border border-lotus/40 p-6 relative">
+              <span className="absolute -top-px -left-px w-4 h-4 border-t border-l border-lotus"></span>
+              <span className="absolute -bottom-px -right-px w-4 h-4 border-b border-r border-lotus"></span>
+              <div className="font-brush text-lotus text-3xl mb-2">Thầy</div>
+              <div className="font-serif text-xl text-cream font-medium mb-1">Thỉnh giáo Pháp sư</div>
+              <div className="text-sm text-cream-dim leading-snug mb-4">Đặt lịch tham vấn 1-1 với thầy Thích Minh Tuệ — 12 năm hộ niệm, giải nghiệp, huớng đạo.</div>
               <button className="w-full py-2.5 bg-gradient-to-br from-gold-bright to-gold text-ink text-sm font-semibold tracking-wider">Đặt lịch 60 phút</button>
             </div>
           </div>

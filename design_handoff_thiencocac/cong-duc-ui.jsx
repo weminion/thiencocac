@@ -168,42 +168,104 @@ function IncenseRitual({ open, onClose, onComplete }) {
           <h3 className="font-serif text-2xl md:text-3xl text-cream font-medium">
             <span className="italic bg-gradient-to-br from-gold-bright to-gold-deep bg-clip-text text-transparent">Tịnh tâm</span>, đốt nén hương
           </h3>
-          <div className="font-brush text-gold/70 text-lg mt-1">香 · 敬</div>
+          <div className="font-brush text-gold/70 text-lg mt-1">Hương · </div>
         </div>
 
-        {/* ─── SCENE ─── */}
-        <div className="relative h-[260px] flex items-end justify-center mb-6 overflow-hidden">
-          {/* khói */}
+        {/* ─── SCENE: Nhang cắm trong lư hương ─── */}
+        <div className="relative h-[300px] flex items-end justify-center mb-6 overflow-hidden">
+          {/* khói bay từ đầu nhang */}
           {phase === 'burning' && (
             <div className="absolute inset-x-0 top-0 h-full pointer-events-none">
-              {[0, 0.3, 0.6, 0.9, 1.2].map(delay => (
+              {[0, 0.4, 0.8, 1.2, 1.6, 2.0].map(delay => (
                 <span key={delay} className="smoke-puff"
-                      style={{ animationDelay: `${delay}s` }}></span>
+                      style={{ animationDelay: `${delay}s`, left: `${48 + (delay % 0.8) * 5}%` }}></span>
               ))}
             </div>
           )}
 
-          {/* nhang */}
-          <div className="relative z-10 flex flex-col items-center">
-            {/* đầu nhang cháy */}
-            {phase !== 'idle' && (
-              <div className="relative w-3 h-3 mb-[-2px]">
-                <div className="absolute inset-0 rounded-full bg-orange-400 animate-pulse"
-                     style={{ boxShadow: '0 0 14px 4px rgba(255,160,50,0.75), 0 0 6px 2px rgba(255,90,20,0.9)' }}></div>
-              </div>
-            )}
-            {/* thân nhang */}
-            <div className="relative" style={{ height: '200px' }}>
-              <div className="w-[2px] bg-gradient-to-b from-orange-900/80 via-amber-900 to-amber-800"
-                   style={{
-                     height: phase === 'idle' ? '200px' : `${200 * (1 - progress * 0.7)}px`,
-                     transition: phase === 'idle' ? 'height 0.3s' : 'none'
-                   }}></div>
-              {/* tàn nhang đã cháy = phần nhạt dần trên */}
+          {/* Tàn nhang rơi */}
+          {phase === 'burning' && progress > 0.15 && (
+            <div className="absolute inset-x-0 bottom-[90px] h-full pointer-events-none">
+              {[0, 1.5, 3.0, 4.5, 6.0].map((delay, i) => (
+                <span key={i} className="ash-fall"
+                      style={{ animationDelay: `${delay}s`, left: `${49 + (i % 2 === 0 ? -0.5 : 0.5)}%` }}></span>
+              ))}
             </div>
-            {/* đế nhang */}
-            <div className="w-16 h-3 bg-gradient-to-b from-ink-3 to-ink rounded-t-sm border-t border-gold/30"></div>
-            <div className="w-24 h-2 bg-ink border border-gold/20 rounded-sm"></div>
+          )}
+
+          {/* Nhang + lư hương */}
+          <div className="relative z-10 flex flex-col items-center" style={{ marginBottom: '8px' }}>
+            {/* Thân nhang — cháy từ TRÊN xuống: đầu nhang luôn ở đỉnh, thân ngắn lại từ trên */}
+            <div className="relative flex flex-col items-center" style={{ height: '180px', justifyContent: 'flex-end' }}>
+              {/* Đầu nhang cháy (di chuyển xuống theo progress) */}
+              {phase !== 'idle' && (
+                <div className="relative" style={{ marginBottom: '-3px', zIndex: 2 }}>
+                  <div className="w-2.5 h-2.5 rounded-full bg-orange-400 animate-pulse"
+                       style={{ boxShadow: '0 0 16px 5px rgba(255,160,50,0.8), 0 0 6px 2px rgba(255,90,20,0.95), 0 0 2px 1px #ffd166' }}></div>
+                </div>
+              )}
+              {/* Thân nhang còn lại — height giảm dần (cháy từ trên xuống) */}
+              <div className="relative">
+                <div
+                  style={{
+                    width: '2.5px',
+                    height: phase === 'idle' ? '180px' : `${180 * (1 - progress * 0.85)}px`,
+                    background: 'linear-gradient(to bottom, #5a2818, #3a1810 30%, #2a1208)',
+                    boxShadow: '0 0 1px rgba(0,0,0,0.5)',
+                    transition: phase === 'idle' ? 'height 0.3s' : 'height 0.1s linear'
+                  }}></div>
+                {/* Que tre đỏ ở đáy nhang (phần cắm vào lư) */}
+                <div
+                  className="absolute left-1/2 -translate-x-1/2 bottom-0"
+                  style={{ width: '2px', height: '32px', background: 'linear-gradient(to bottom, #8a1818, #5a0e0e)', zIndex: 1 }}></div>
+              </div>
+            </div>
+
+            {/* Lư hương SVG */}
+            <div className="relative" style={{ marginTop: '-14px' }}>
+              <svg width="160" height="100" viewBox="0 0 160 100">
+                <defs>
+                  <linearGradient id="luBody" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%"  stopColor="#3a2a18"/>
+                    <stop offset="40%" stopColor="#6a4a28"/>
+                    <stop offset="100%" stopColor="#2a1a0a"/>
+                  </linearGradient>
+                  <linearGradient id="luRim" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%"  stopColor="#d4a24b"/>
+                    <stop offset="100%" stopColor="#8a6a2a"/>
+                  </linearGradient>
+                  <radialGradient id="luAsh" cx="50%" cy="40%" r="50%">
+                    <stop offset="0%"  stopColor="#d8c8a8"/>
+                    <stop offset="60%" stopColor="#9a8a6a"/>
+                    <stop offset="100%" stopColor="#5a4a30"/>
+                  </radialGradient>
+                </defs>
+                {/* Quai trái */}
+                <path d="M 18 38 Q 8 34 12 24 Q 18 18 28 24" fill="none" stroke="url(#luRim)" strokeWidth="3"/>
+                {/* Quai phải */}
+                <path d="M 142 38 Q 152 34 148 24 Q 142 18 132 24" fill="none" stroke="url(#luRim)" strokeWidth="3"/>
+                {/* Thân lư (hình bát) */}
+                <path d="M 22 32 L 138 32 Q 145 32 142 40 L 130 80 Q 128 88 118 88 L 42 88 Q 32 88 30 80 L 18 40 Q 15 32 22 32 Z"
+                      fill="url(#luBody)" stroke="#1a0e08" strokeWidth="0.6"/>
+                {/* Vành miệng lư (vàng) */}
+                <ellipse cx="80" cy="32" rx="60" ry="5" fill="url(#luRim)" stroke="#3a2a10" strokeWidth="0.5"/>
+                <ellipse cx="80" cy="32" rx="56" ry="3" fill="#1a0e08"/>
+                {/* Tro trong lư */}
+                <ellipse cx="80" cy="32" rx="52" ry="2.5" fill="url(#luAsh)"/>
+                {/* Hoa văn chính giữa thân lư — chữ Hương */}
+                <text x="80" y="62" textAnchor="middle" fontFamily="'Dancing Script', serif"
+                      fontSize="22" fill="#d4a24b" opacity="0.5">Hương</text>
+                {/* Chân lư 3 cẳng */}
+                <path d="M 38 88 L 32 96 L 44 96 Z" fill="#3a2a18" stroke="#1a0e08" strokeWidth="0.5"/>
+                <path d="M 76 88 L 72 98 L 88 98 L 84 88 Z" fill="#2a1a10" stroke="#1a0e08" strokeWidth="0.5"/>
+                <path d="M 122 88 L 116 96 L 128 96 Z" fill="#3a2a18" stroke="#1a0e08" strokeWidth="0.5"/>
+                {/* Highlight vành */}
+                <ellipse cx="80" cy="30.5" rx="58" ry="1" fill="#f4cf73" opacity="0.6"/>
+              </svg>
+            </div>
+
+            {/* Đế gỗ */}
+            <div className="w-44 h-1.5 bg-gradient-to-b from-amber-950 to-ink rounded-sm border-t border-gold/20" style={{ marginTop: '-2px' }}></div>
           </div>
         </div>
 
@@ -235,7 +297,7 @@ function IncenseRitual({ open, onClose, onComplete }) {
           )}
           {phase === 'done' && (
             <div className="animate-fade-up">
-              <div className="font-brush text-gold text-4xl mb-2">圓滿</div>
+              <div className="font-brush text-gold text-4xl mb-2"></div>
               <p className="font-serif text-xl text-cream mb-1">Viên mãn</p>
               <p className="text-sm text-gold-bright">+15 Công Đức</p>
             </div>
@@ -251,21 +313,40 @@ function IncenseRitual({ open, onClose, onComplete }) {
       <style>{`
         .smoke-puff {
           position: absolute;
-          left: 50%;
-          bottom: 50px;
-          width: 40px;
-          height: 40px;
+          top: 30px;
+          width: 36px;
+          height: 36px;
           border-radius: 50%;
-          background: radial-gradient(circle, rgba(245,236,217,0.22), rgba(245,236,217,0.04) 60%, transparent);
-          filter: blur(8px);
+          background: radial-gradient(circle, rgba(245,236,217,0.28), rgba(245,236,217,0.06) 55%, transparent);
+          filter: blur(9px);
           transform: translateX(-50%);
-          animation: smokeRise 3.5s ease-in infinite;
+          animation: smokeRise 4s ease-out infinite;
           opacity: 0;
+          pointer-events: none;
         }
         @keyframes smokeRise {
-          0%   { transform: translate(-50%, 0) scale(0.4); opacity: 0; }
-          15%  { opacity: 0.8; }
-          100% { transform: translate(calc(-50% + 30px), -220px) scale(2.2); opacity: 0; }
+          0%   { transform: translate(-50%, 30px) scale(0.3); opacity: 0; }
+          15%  { opacity: 0.85; }
+          50%  { transform: translate(calc(-50% + 14px), -50px) scale(1.4); opacity: 0.6; }
+          100% { transform: translate(calc(-50% - 8px), -150px) scale(2.4); opacity: 0; }
+        }
+        .ash-fall {
+          position: absolute;
+          top: 0;
+          width: 3px;
+          height: 3px;
+          border-radius: 50%;
+          background: radial-gradient(circle, #d8c8a8, #6a5a3a);
+          box-shadow: 0 0 2px rgba(216,200,168,0.6);
+          animation: ashFall 6s linear infinite;
+          opacity: 0;
+          pointer-events: none;
+        }
+        @keyframes ashFall {
+          0%   { transform: translate(-50%, 0) scale(1); opacity: 0; }
+          5%   { opacity: 0.9; }
+          50%  { transform: translate(calc(-50% + 4px), 60px) scale(0.9); opacity: 0.7; }
+          100% { transform: translate(calc(-50% - 2px), 120px) scale(0.4); opacity: 0; }
         }
       `}</style>
     </div>
@@ -337,7 +418,7 @@ function RitualCard({ glyph, title, subtitle, reward, done, disabled, disabledRe
           </p>
           {!done && !disabled && (
             <div className="mt-2 flex items-center gap-1.5">
-              <span className="font-brush text-gold text-sm">功</span>
+              <span className="font-brush text-gold text-sm">Đức</span>
               <span className="text-[12px] text-gold-bright font-medium">+{reward} Công Đức</span>
             </div>
           )}
@@ -390,7 +471,7 @@ function MeditationTimer({ open, onClose, onComplete }) {
         <h3 className="font-serif text-3xl text-cream mb-1">
           <span className="italic bg-gradient-to-br from-gold-bright to-gold-deep bg-clip-text text-transparent">Tĩnh lặng</span>
         </h3>
-        <div className="font-brush text-gold/60 text-xl mb-8">禪 · 定</div>
+        <div className="font-brush text-gold/60 text-xl mb-8">Thiền · </div>
 
         {/* vòng tròn thiền */}
         <div className="relative w-56 h-56 mx-auto mb-8">

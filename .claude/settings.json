@@ -13,7 +13,9 @@
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
       "Bash(git push *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/dashboard)",
+      "Bash(curl -s http://localhost:3000/dashboard)"
     ],
     "additionalDirectories": [
       "/private/tmp"

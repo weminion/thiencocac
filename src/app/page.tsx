@@ -1,7 +1,6 @@
 import LandingShell from './components/landing/LandingShell';
 import Hero from './components/landing/Hero';
-import Services from './components/landing/Services';
-import MiniTool from './components/landing/MiniTool';
+import Features from './components/landing/Features';
 import Blog from './components/landing/Blog';
 import Footer from './components/landing/Footer';
 
@@ -11,8 +10,7 @@ export default function HomePage() {
       <LandingShell />
       <main>
         <Hero />
-        <Services />
-        <MiniTool />
+        <Features />
         <Blog />
       </main>
       <Footer />
