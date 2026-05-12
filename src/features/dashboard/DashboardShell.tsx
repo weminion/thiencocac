@@ -7,11 +7,12 @@ import TopBar from './TopBar';
 interface Props {
   children: ReactNode;
   userName?: string;
+  userId?: string;
   meritBalance?: number;
   meritStreak?: number;
 }
 
-export default function DashboardShell({ children, userName, meritBalance = 0, meritStreak = 0 }: Props) {
+export default function DashboardShell({ children, userName, userId, meritBalance = 0, meritStreak = 0 }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -19,6 +20,8 @@ export default function DashboardShell({ children, userName, meritBalance = 0, m
       <Sidebar
         mobileOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
+        userName={userName}
+        userId={userId}
       />
       <div className="flex-1 flex flex-col min-w-0">
         <TopBar

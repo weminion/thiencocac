@@ -2,7 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
 
 const NAV_ICONS: Record<string, string> = {
   home:      'M12 2.5l9 7.5v10.5a1 1 0 01-1 1h-5v-7h-6v7H4a1 1 0 01-1-1V10l9-7.5z',
@@ -41,10 +42,20 @@ const NAV_ITEMS = [
 interface Props {
   mobileOpen?: boolean;
   onClose?: () => void;
+  userName?: string;
+  userId?: string;
 }
 
-export default function Sidebar({ mobileOpen = false, onClose }: Props) {
+export default function Sidebar({ mobileOpen = false, onClose, userName = 'Khách', userId }: Props) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  async function handleLogout() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push('/');
+    router.refresh();
+  }
 
   return (
     <>
@@ -143,15 +154,25 @@ export default function Sidebar({ mobileOpen = false, onClose }: Props) {
         {/* User profile */}
         <div className="flex items-center gap-3 p-4 border-t" style={{ borderColor: 'rgba(212,162,75,0.2)' }}>
           <div
-            className="w-10 h-10 rounded-full flex items-center justify-center font-brush text-base flex-shrink-0"
+            className="w-10 h-10 rounded-full flex items-center justify-center font-brush text-base flex-shrink-0 uppercase"
             style={{ background: 'linear-gradient(135deg, var(--color-gold-bright), var(--color-gold-deep))', color: 'var(--color-ink)' }}
           >
-            An
+            {userName.slice(0, 2)}
           </div>
           <div className="flex-1 min-w-0">
-            <div className="text-sm font-medium truncate" style={{ color: 'var(--color-cream)' }}>Nguyễn Minh</div>
+            <div className="text-sm font-medium truncate" style={{ color: 'var(--color-cream)' }}>{userName}</div>
             <div className="text-[11px]" style={{ color: 'var(--color-cream-dim)' }}>Thiện căn</div>
           </div>
+          <button
+            onClick={handleLogout}
+            title="Đăng xuất"
+            className="w-8 h-8 flex items-center justify-center rounded transition-colors hover:text-gold-bright flex-shrink-0"
+            style={{ color: 'var(--color-cream-dim)' }}
+          >
+            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+              <path d="M10 3h4v10h-4M7 10l3-3-3-3M10 7H2" />
+            </svg>
+          </button>
         </div>
       </aside>
     </>
